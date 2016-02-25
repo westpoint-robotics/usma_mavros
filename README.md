@@ -1,10 +1,41 @@
 # usma_mavros
 Instructions on how to configure an embedded computer and PX4 to run mavros.
-
+#### Configure embedded computer with Ubuntu and ROS (Raspberry Pi 2)
+1. [Install Ubuntu 14.04 LTS] (https://wiki.ubuntu.com/ARM/RaspberryPi)
+ - [These instructions are helpful as well] (https://www.raspberrypi.org/documentation/installation/installing-images/linux.md)
+2. Connect your RPi2 using wired Ethernet. 
+ - If a wired connection is unavailable, use a USB-tether on a phone.
+ - Set up your RPi2 interfaces to allow a USB tether:
+ - `$ sudo nano /etc/network/interfaces`
+```
+allow-hotplug usb0
+iface usb0 inet dhcp
+```
+3. Install linux-firmware drivers to enable wifi.
+ - `sudo apt-get install linux-firmware`
+ - `sudo apt-get install wicd`
+4. [Setup wifi on your device] (https://help.ubuntu.com/community/NetworkConfigurationCommandLine/Automatic)
+ - [Another reference] (https://learn.adafruit.com/adafruits-raspberry-pi-lesson-3-network-setup/setting-up-wifi-with-occidentalis)
+ - `$ sudo nano /etc/network/interfaces`
+```
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+  wpa-ssid "EECSDS3"
+  wpa-psk "accessgranted"
+```
+5. Once connected to wifi, ensure you have performed the other [installs] (https://wiki.ubuntu.com/ARM/RaspberryPi)
+ - Resize partition
+ - Install swapfile
+ - Install ssh
+ - The serial console will be configed later
+ - GNOME is optional as well
+6. [Install ROS] (http://wiki.ros.org/indigo/Installation/UbuntuARM)
+7. [Setup ROS Workspace] (http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
 #### Setup embedded computer (Raspberry Pi 2)
 1. Make these [hardware connections] (http://dev.ardupilot.com/wiki/raspberry-pi-via-mavlink/) between the RPi2 and PX4
  * The software instructions in the above link are not followed
-3. Assume Ubuntu 14.04 and ROS Jade installed and a catkin_ws created
+3. Assume Ubuntu 14.04 and ROS Indigo installed and a catkin_ws created
 4. Setup serial port and baud rate on RPi2
  * Create a temp folder and clone this [package] (https://github.com/vooon/rarog.git)
  * Follow the installation [instructions] (https://github.com/vooon/rarog/tree/master/rarog_configs/rpi2)
