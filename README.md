@@ -10,7 +10,7 @@ Instructions on how to configure an embedded computer and PX4 to run mavros.
  * Follow the installation [instructions] (https://github.com/vooon/rarog/tree/master/rarog_configs/rpi2)
    * Ignore #4 and #5  
 5. Install mavros package and dependencies
- * `sudo apt-get install ros-jade-mavros ros-jade-mavlink ros-jade-diagnostic-updater ros-jade-tf2-ros ros-jade-angles ros-jade-eigen-conversions ros-jade-image-transport ros-jade-cv-bridge`
+ * `sudo apt-get install ros-jade-mavros ros-jade-mavlink ros-jade-diagnostic-updater ros-jade-tf2-ros ros-jade-angles ros-jade-eigen-conversions ros-jade-image-transport ros-jade-cv-bridge ros-jade-urdf ros-jade-tf`
 6. Clone usma_mavros
  * `cd ~/catkin_ws/src`
  * `git clone https://github.com/westpoint-robotics/usma_mavros`
