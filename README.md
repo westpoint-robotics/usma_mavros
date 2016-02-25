@@ -12,11 +12,11 @@ Instructions on how to configure an embedded computer and PX4 to run mavros.
  * `cd ~`
  * `vim .bashrc` (or your preferred editor)
  * Add this export to the end of your .bashrc file that matches the IP of your master machine (i.e. the basestation):
-  * export ROS_MASTER_URI=http://mavros:11311
+   * export ROS_MASTER_URI=http://mavros:11311
  * Both the client and server should have this export in their .bashrc
  * Edit your /etc/hosts to include the computer name and IP address for the other computer similar to these [instructions] (http://www.faqs.org/docs/securing/chap9sec95.html) 
  * Other references:
-  * http://wiki.ros.org/ROS/Tutorials/MultipleMachines
-  * http://wiki.ros.org/ROS/NetworkSetup
+   * http://wiki.ros.org/ROS/Tutorials/MultipleMachines
+    * http://wiki.ros.org/ROS/NetworkSetup
 5. Run mavros on the embedded computer:
  * `roslaunch usma_mavros px4.launch`
