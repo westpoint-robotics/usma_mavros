@@ -1,5 +1,6 @@
 # usma_mavros
 Instructions on how to configure an embedded computer and PX4 to run mavros.
+
 #### Configure embedded computer with Ubuntu and ROS (Raspberry Pi 2)
 1. [Install Ubuntu 14.04 LTS] (https://wiki.ubuntu.com/ARM/RaspberryPi)
  - [These instructions are helpful as well] (https://www.raspberrypi.org/documentation/installation/installing-images/linux.md)
@@ -32,6 +33,7 @@ iface wlan0 inet dhcp
  - GNOME is optional as well
 6. [Install ROS] (http://wiki.ros.org/indigo/Installation/UbuntuARM)
 7. [Setup ROS Workspace] (http://wiki.ros.org/catkin/Tutorials/create_a_workspace)
+
 #### Setup embedded computer (Raspberry Pi 2)
 1. Make these [hardware connections] (http://dev.ardupilot.com/wiki/raspberry-pi-via-mavlink/) between the RPi2 and PX4
  * The software instructions in the above link are not followed
