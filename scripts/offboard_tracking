@@ -43,7 +43,7 @@ button_map = {
     's1':8,
     's2':9,
     's3':10,
-    's4':11
+    'tracking_AR':11
 }
 
 def arm(args, state):
@@ -87,10 +87,14 @@ class teleopControl:
         self.cur_pose = PoseStamped()
         self.publishedPose= PoseStamped()
         self.publishedPose.pose.orientation.w=1.0
-    
-        mocap_sub = rospy.Subscriber("/mavros/vision_pose/pose", PoseStamped, self.cur_pose_cb)
-        self.track_pose = PoseStamped()        
+        self.track_pose = PoseStamped()  
+        self.ar_tracker=PoseStamped()
+        
+        mocap_sub = rospy.Subscriber("/mavros/local_position/local", PoseStamped, self.cur_pose_cb)
+        #mocap_sub = rospy.Subscriber("/mavros/vision_pose/pose", PoseStamped, self.cur_pose_cb)
         mocap_track_sub=rospy.Subscriber("/Robot_2/pose",PoseStamped, self.track_pose_cb)
+        vision_pose_sub=rospy.Subscriber("/aruco_single/pose",PoseStamped,self.vision_pose_cb)
+
         rospy.spin()
 
     def cur_pose_cb(self,msg):
@@ -98,7 +102,10 @@ class teleopControl:
         
     def track_pose_cb(self,msg):
         self.track_pose=msg
-    
+  
+    def vision_pose_cb(self,msg):
+        self.ar_tracker=msg
+
     def joy_cb(self,joy):
         # get axes normalized to -1.0..+1.0 RPY, 0.0..1.0 T
         roll = get_axis(joy, 'roll')
@@ -146,11 +153,14 @@ class teleopControl:
             self.publishedPose.pose.position.z = 1
             self.set_point_pub.publish(self.publishedPose)
 
-        if (get_buttons(joy,'s4') == 1):
+        if (get_buttons(joy,'tracking_AR') == 1):
             self.publishedPose= self.cur_pose
-            self.publishedPose.pose.position.x = -0.5
-            self.publishedPose.pose.position.y = 0.5
+            self.publishedPose.pose.position.x = self.publishedPose.pose.position.x-self.ar_tracker.pose.position.x
+            self.publishedPose.pose.position.y = self.publishedPose.pose.position.y+self.ar_tracker.pose.position.y
+            #self.publishedPose.pose.position.z = self.ar_tracker.pose.position.z
+            self.publishedPose.pose.orientation.w=1.0
             self.set_point_pub.publish(self.publishedPose)
+            rospy.sleep(0.1)
 
         if (get_buttons(joy,'set_takeoff_setpoint') == 1):
             self.publishedPose = self.cur_pose
@@ -158,7 +168,7 @@ class teleopControl:
             self.set_point_pub.publish(self.publishedPose)
         
         if (get_buttons(joy,'tracking') == 1):
-            self.publishedPose= self.track_pose
+            self.publishedPose.pose.position= self.track_pose.pose.position
             self.publishedPose.pose.position.z = 1.0
             self.set_point_pub.publish(self.publishedPose)
 
