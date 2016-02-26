@@ -25,7 +25,7 @@ iface wlan0 inet dhcp
   wpa-ssid "EECSDS3"
   wpa-psk "accessgranted"
 ```
-(Make sure the wifi dongle is assigned wlan0 name.If not,then you can change it under the udev rules with `sudo nano /etc/udev/rules.d/70-persistent-net.rules`
+(Make sure the wifi dongle is assigned wlan0 name.If not,then you can change it under the udev rules with following command. `sudo nano /etc/udev/rules.d/70-persistent-net.rules`
 5. Once connected to wifi, ensure you have performed the other [installs] (https://wiki.ubuntu.com/ARM/RaspberryPi)
  - Resize partition
  - Install swapfile
