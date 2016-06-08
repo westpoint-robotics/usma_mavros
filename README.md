@@ -5,8 +5,12 @@
 2. Configure PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc). 
  - If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
  - Configure the PX4 to operate in mocap using [external position] (http://dev.px4.io/external-position.html).
+  - The `sys_companion` field is set 921600.
+  - `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
+  - `CBRK_NO_VISION` parameter set to 0.
+  - Indoor navigation is only achieved by using the external headings from mocap.
  - The [offboard control](http://dev.px4.io/offboard-control.html) documentation provides a good overview.
-
+ 
 ### Computer Instructions
 1. Install the mavros package and dependencies (assuming ROS Indigo used).
  - `sudo apt-get install ros-indigo-mavros ros-indigo-mavlink ros-indigo-diagnostic-updater ros-indigo-tf2-ros ros-indigo-angles ros-indigo-eigen-conversions ros-indigo-image-transport ros-indigo-cv-bridge ros-indigo-urdf ros-indigo-tf ros-indigo-control-toolbox`
@@ -16,13 +20,43 @@
 4. Build
  - `cd ~/catkin_ws/`
  - `catkin_make -DMAVLINK_DIALECT=common`
-5. Run mavros on computer:
- * `roslaunch usma_mavros px4.launch`
- * Note some variations to the mavros configuration:
-   * Using QGC, the `sys_companion` field is set 921600 so that autopilot is enabled with higher baud rate to communicate with the computer.
-    * In `px4.launch`, the computer is connecting through ttyUSB0:921600 instead of ttyACM0:57600
+5. Configure mavros on computer:
+ - Note some variations to the mavros configuration:
+ - Using QGC, the `sys_companion` field is set 921600 so that autopilot is enabled with a higher baud rate to communicate with the computer.
+ - In `px4.launch`, 
+  - The computer is connecting through `ttyUSB0:921600` instead of `ttyACM0:57600`.
+  - Chage the `gcs_url` argument default to `default="udp://:14556@192.168.200.XX:14550"` to match the IP of the ground control station.
+   - QGC can connect to the autopilot using the Default UDP link.  
+   - If using mocap, ensure that the `vision_pose_estimate` plugin is enabled and NOT blacklisted.
+6. Execute mavros
+ - `roslaunch usma_mavros px4.launch`
+ - Check that there is a heartbeat with the PX4.
+ - Check the debug messages for a valid vision estimate: `FCU: [inav] VISION estimate valid`
+ - Echo the FCU local position to check for propoer coordinate frame conversions: `rostopic echo /mavros/local_position/local`
+
+<a href="url"><img src="https://github.com/westpoint-robotics/usma_vtol/blob/master/setup.png" align="center" width="500" ></a>
+
 
 ### Instructions to set up a Raspberry Pi 2
+
+1. [Install Ubuntu 14.04 LTS] (https://wiki.ubuntu.com/ARM/RaspberryPi)
+ - [These instructions are helpful as well] (https://www.raspberrypi.org/documentation/installation/installing-images/linux.md)
+2. Connect your RPi2 using wired Ethernet. 
+3. Install linux-firmware drivers to enable wifi.
+ - `sudo apt-get install linux-firmware`
+ - `sudo apt-get install wicd`
+4. [Setup wifi on your device] (https://help.ubuntu.com/community/NetworkConfigurationCommandLine/Automatic)
+ - [Another reference] (https://learn.adafruit.com/adafruits-raspberry-pi-lesson-3-network-setup/setting-up-wifi-with-occidentalis)
+ - `$ sudo nano /etc/network/interfaces`
+```
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+  wpa-ssid "EECSDS3"
+  wpa-psk "accessgranted"
+```
+5. [Install ROS] (http://wiki.ros.org/indigo/Installation/UbuntuARM)
+6
 1. Make these [hardware connections] (http://dev.ardupilot.com/wiki/raspberry-pi-via-mavlink/) between the RPi2 and PX4
  - The software instructions in the above link are not followed.
 2. Assume Ubuntu 14.04 and ROS Indigo installed and a catkin_ws created.
@@ -45,3 +79,10 @@
  * Note some variations to the mavros configuration: 
    * Using QGC, ensure the `sys_companion` field is set to 921600 so that autopilot is enabled with higher baud rate to communicate with onboard computer
     * In `px4.launch`, the RPi2 is connecting through ttyAMA0:921600 instead of ttyACM0:57600
+
+#### Offboard Tracking  
+1. set up ROS_MASTER_URI and IP on all the terminals used in tracking 
+2. Run <code> roslaunch mavros px4.launch </code> on onboard computer
+3. on remote host,set up ROS_MASTER_URI and IP and run <code> roslaunch mocap_optitrack mocap.launch </code>
+4. on different terminal,set up ROS_MASTER_URI and IP and run  <code> roslaunch mavros_extras teleop_track.launch </code>
+5. Joystick button map is listed in f710_joy.yaml( for take-off ,land, track button reference) 
