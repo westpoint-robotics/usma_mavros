@@ -1,8 +1,13 @@
 # usma_mavros
 
 ### Computer and PX4 instructions
-1. Configure PX4 using QGroundControl (download latest firmware, set up flight modes, etc).
+1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 on the PX4 as described [here] (http://ardupilot.org/dev/docs/odroid-via-mavlink.html).
+2.  
+
+2. Configure PX4 using QGroundControl (download latest firmware, set up flight modes, etc).
  - If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
+ - 
+ - Configure the PX4 to operate in mocap using [external position] (http://dev.px4.io/external-position.html)
 
 2. Install mavros package and dependencies (assuming ROS Indigo used).
  - `sudo apt-get install ros-indigo-mavros ros-indigo-mavlink ros-indigo-diagnostic-updater ros-indigo-tf2-ros ros-indigo-angles ros-indigo-eigen-conversions ros-indigo-image-transport ros-indigo-cv-bridge ros-indigo-urdf ros-indigo-tf ros-indigo-control-toolbox`
