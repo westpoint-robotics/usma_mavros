@@ -2,7 +2,7 @@
 
 ### Computer and PX4 instructions
 1. Configure PX4 using QGroundControl (download latest firmware, set up flight modes, etc).
- - If operating in mocap, follow the usma_optitrack instructions for set up motion capture.
+ - If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
 
 2. Install mavros package and dependencies (assuming ROS Indigo used).
  - `sudo apt-get install ros-indigo-mavros ros-indigo-mavlink ros-indigo-diagnostic-updater ros-indigo-tf2-ros ros-indigo-angles ros-indigo-eigen-conversions ros-indigo-image-transport ros-indigo-cv-bridge ros-indigo-urdf ros-indigo-tf ros-indigo-control-toolbox`
