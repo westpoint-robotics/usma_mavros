@@ -3,7 +3,7 @@
 
   <arg name="TAIL_NUM" />
   <arg name="MARKER_NAME" default="f450_$(arg TAIL_NUM)" />
-  <arg name="PX4_DEV" default="/dev/ttyACM0:921600"/>
+  <arg name="PX4_DEV" default="/dev/ttySAC0:921600"/>
   <arg name="gcs_url" default="" />
   <arg name="tgt_system" default="1" />
   <arg name="tgt_component" default="1" />
