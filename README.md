@@ -1,6 +1,6 @@
 # usma_mavros
 
-These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup to a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, RPi, or ground station PC.
+These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup for a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, RPi, or ground station PC.
 
 ## Indoor Operations
 
@@ -9,8 +9,10 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 2. For general manual control, configure the PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc).
 
 3. If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
- - Configure the PX4 to operate in mocap using [external position estimation] (https://dev.px4.io/en/ros/external_position_estimation.html).
- - Instructions are included to build from source. The firmware can also be downloaded [here] (http://px4-travis.s3.amazonaws.com/Firmware/stable/px4fmu-v2_lpe.px4).
+
+  - Configure the PX4 to operate in mocap using [external position estimation] (https://dev.px4.io/en/ros/external_position_estimation.html).
+ 
+  - Instructions are included to build from source. The firmware can also be downloaded [here] (http://px4-travis.s3.amazonaws.com/Firmware/stable/px4fmu-v2_lpe.px4).
  - Here is a summary of firmware parameters:
   - The `sys_companion` field is set 921600.
   - `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
