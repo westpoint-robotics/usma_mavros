@@ -8,7 +8,7 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 
 2. For general manual control, configure the PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc).
 
-<a href="http://example.com/" target="_blank">Hello, world!</a>
+<a href="http://qgroundcontrol.org/" target="_blank">QGroundControl</a>
 
 3. If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
 
