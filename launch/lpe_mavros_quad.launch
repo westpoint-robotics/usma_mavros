@@ -1,26 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
-  <arg name="MARKER_NAME" default="paresh" />
+  <arg name="TAIL_NUM" />
+  <arg name="MARKER_NAME" default="f450_$(arg TAIL_NUM)" />
   <arg name="PX4_DEV" default="/dev/ttyACM0:921600"/>
   <arg name="gcs_url" default="" />
   <arg name="tgt_system" default="1" />
   <arg name="tgt_component" default="1" />
   <arg name="log_output" default="screen" />
-  <arg name="pluginlists_yaml" default="$(find mavros)/launch/px4_pluginlists.yaml" />
-  <arg name="config_yaml" default="$(find mavros)/launch/px4_config.yaml" />
+  <arg name="pluginlists_yaml" default="$(find usma_mavros)/config/px4_pluginlists.yaml" />
+  <arg name="config_yaml" default="$(find usma_mavros)/config/px4_config.yaml" />
 
   <arg name="BASE_STATION_NAME" default="base_station"/>
-  <arg name="BASE_STATION_ADDRESS" default="localhost"/>
-  <machine name="$(arg BASE_STATION_NAME)" address="$(arg BASE_STATION_ADDRESS)"/>
+  <arg name="BASE_STATION_ADDRESS" default="ros304"/>
+  <arg name="BASE_STATION_USER" default="rrc"/>
+  <machine name="$(arg BASE_STATION_NAME)"
+           address="$(arg BASE_STATION_ADDRESS)"
+           user="$(arg BASE_STATION_USER)"
+           env-loader="/home/$(arg BASE_STATION_USER)/catkin_ws/devel/env.sh"/>
 
   <arg name="VIZ_THROTTLE_SPEED" default="16384"/>
   <arg name="VIZ_THROTTLE_SPEED_HALF" value="$(eval arg('VIZ_THROTTLE_SPEED')/2.0)"/>
   <arg name="MOCAP_THROTTLE_SPEED" default="16384"/>
 
   <arg name="COMPANION_COMPUTER_NAME" default="$(arg MARKER_NAME)"/>
-  <arg name="COMPANION_COMPUTER_ADDRESS" default="localhost"/>
-  <machine name="$(arg COMPANION_COMPUTER_NAME)" address="$(arg COMPANION_COMPUTER_ADDRESS)"/>
+  <arg name="COMPANION_COMPUTER_ADDRESS" default="odroid-$(arg TAIL_NUM)"/>
+  <arg name="COMPANION_COMPUTER_USER" default="odroid"/>
+  <machine name="$(arg COMPANION_COMPUTER_NAME)"
+           address="$(arg COMPANION_COMPUTER_ADDRESS)"
+           user="$(arg COMPANION_COMPUTER_USER)"
+           env-loader="/home/$(arg COMPANION_COMPUTER_USER)/catkin_ws/devel/env.sh" />
 
   <group ns="$(arg MARKER_NAME)">
     <!-- Throttle and relay at the same time
