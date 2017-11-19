@@ -4,7 +4,7 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 
 ## Indoor Operations
 
-1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://ardupilot.org/dev/docs/odroid-via-mavlink.html){:target="_blank"}.  For initial testing and configuration, it is possible to connect to the PX4's micro USB port.
+1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://ardupilot.org/dev/docs/odroid-via-mavlink.html target="_blank").  For initial testing and configuration, it is possible to connect to the PX4's micro USB port.
 
 2. For general manual control, configure the PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc).
 
