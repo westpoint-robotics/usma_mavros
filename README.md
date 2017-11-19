@@ -8,24 +8,23 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 
 2. For general manual control, configure the PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc).
 
-<a href="http://qgroundcontrol.org/" target="_blank">QGroundControl</a>
-
 3. If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
 
    - Configure the PX4 to operate in mocap using [external position estimation](https://dev.px4.io/en/ros/external_position_estimation.html).
  
    - Instructions are included to build from source. The firmware can also be downloaded [here](http://px4-travis.s3.amazonaws.com/Firmware/stable/px4fmu-v2_lpe.px4).
+   
+   - Transmitter settings can be found [here](). At a minimum, the RC transmitter should have manual, position control, offboard control, and a kill switch. 
+   
+   - First achieve position control of the vehicle using the transmitter.
+   
    - Here is a summary of firmware parameters:
 
       -- The `sys_companion` field is set 921600.
+      -- `ATT_EXT_HDG_M` parameter is set to 2.
 
-      -- `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
-
-      -- `CBRK_NO_VISION` parameter set to 0.
+     
     
-      -- Indoor navigation is only achieved by using the external headings from mocap.
-    
-      -- The [offboard control](http://dev.px4.io/offboard-control.html) documentation provides a good overview.
  
 
 
