@@ -4,7 +4,7 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 
 ## Indoor Operations
 
-1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://ardupilot.org/dev/docs/odroid-via-mavlink.html target="_blank").  For initial testing and configuration, it is possible to connect to the PX4's micro USB port.
+1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://ardupilot.org/dev/docs/odroid-via-mavlink.html).  For initial testing and configuration, it is possible to connect to the PX4's micro USB port.
 
 2. For general manual control, configure the PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc).
 
@@ -15,15 +15,15 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
    - Instructions are included to build from source. The firmware can also be downloaded [here](http://px4-travis.s3.amazonaws.com/Firmware/stable/px4fmu-v2_lpe.px4).
    - Here is a summary of firmware parameters:
 
-    - The `sys_companion` field is set 921600.
+      -- The `sys_companion` field is set 921600.
 
-    - `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
+      -- `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
 
-    - `CBRK_NO_VISION` parameter set to 0.
+      -- `CBRK_NO_VISION` parameter set to 0.
     
-    - Indoor navigation is only achieved by using the external headings from mocap.
+      -- Indoor navigation is only achieved by using the external headings from mocap.
     
-    - The [offboard control](http://dev.px4.io/offboard-control.html) documentation provides a good overview.
+      -- The [offboard control](http://dev.px4.io/offboard-control.html) documentation provides a good overview.
  
 
 
