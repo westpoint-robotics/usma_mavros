@@ -183,3 +183,23 @@ An ssh key should already be setup. Share with the odroid
 cat ~/.ssh/id_rsa.pub
 ```
 Copy and paste this into the odroid's authorized_keys file in a new line
+
+
+# How to run
+
+Make sure a BATTERY is plugged in
+
+Terminal A
+```
+roslaunch usma_mavros base_station.launch
+```
+
+Terminal B
+```
+roslaunch usma_mavros lpe_mavros_quad.launch TAIL_NUM:=131
+```
+
+Terminal C
+```
+rosrun usma_mavros test_flight __ns:=f450_131
+```
