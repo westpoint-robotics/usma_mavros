@@ -1,0 +1,224 @@
+#!/usr/bin/env python
+import rospy
+from geometry_msgs.msg import PoseStamped
+from mavros_msgs.msg import State
+from mavros_msgs.srv import CommandBool, CommandBoolRequest, SetMode, SetModeRequest
+import numpy as np
+import threading
+
+
+class WaypointFeeder:
+    __slots__ = ["waypoints", "pose_pub", 
+                 "state_sub", "cur_state",
+                 "pose_sub", "cur_pose",
+                 "frame_id", "feeder_thread"]
+
+    def __init__(self, frame_id):
+        self.frame_id = frame_id
+        self.cur_state = None
+        self.cur_pose = None
+
+        self.waypoints = []
+
+        self.state_sub = rospy.Subscriber("mavros/state", State, self.state_cb)
+        self.pose_sub = rospy.Subscriber("mavros/mocap/pose", PoseStamped, self.pose_cb)
+
+        self.pose_pub = rospy.Publisher("mavros/setpoint_position/local", PoseStamped)
+
+        self.feeder_thread = threading.Thread(target=self.feeder)
+        self.feeder_thread.start()
+
+    def state_cb(self, msg):
+        self.cur_state = msg
+
+    def pose_cb(self, msg):
+        self.cur_pose = msg
+        if len(self.waypoints) == 0:
+            self.add_waypoint(msg)
+
+    def add_waypoint(self, waypoint):
+        assert(type(waypoint) == PoseStamped)
+        assert(waypoint.header.frame_id == self.frame_id)
+        print "Adding ", (waypoint.pose.position.x, waypoint.pose.position.y, waypoint.pose.position.z)
+
+        self.waypoints.append(waypoint)
+
+    def clear_waypoints(self):
+        self.waypoints = []
+
+    def wait_for_ready(self):
+        r = rospy.Rate(0.2)
+        while not rospy.is_shutdown():
+            print "Checking for data"
+            response = self.is_ready()
+            if response:
+                print "Ready to command"
+                return
+            r.sleep()
+
+    def wait_for_disarm(self):
+        r = rospy.Rate(0.2)
+        while not rospy.is_shutdown():
+            print "Sending disarm"
+            response = self.set_disarm()
+            if response:
+                print "disarmed"
+                return
+            r.sleep()
+
+    def set_disarm(self):
+        rospy.wait_for_service('mavros/cmd/arming')
+        try:
+           proxy = rospy.ServiceProxy('mavros/cmd/arming', CommandBool)
+           arm_cmd = CommandBoolRequest()
+           arm_cmd.value = False
+           resp1 = proxy(arm_cmd)
+           return resp1.success
+        except rospy.ServiceException, e:
+           print "Service call failed: %s"%e
+           return False
+
+    def wait_for_arm(self):
+        r = rospy.Rate(0.2)
+        while not rospy.is_shutdown():
+            print "Sending arm"
+            response = self.set_arm()
+            if response:
+                print "Armed"
+                return
+            r.sleep()
+
+    def set_arm(self):
+        rospy.wait_for_service('mavros/cmd/arming')
+        try:
+           proxy = rospy.ServiceProxy('mavros/cmd/arming', CommandBool)
+           arm_cmd = CommandBoolRequest()
+           arm_cmd.value = True
+           resp1 = proxy(arm_cmd)
+           return resp1.success
+        except rospy.ServiceException, e:
+           print "Service call failed: %s"%e
+           return False
+
+    def wait_for_offboard(self):
+        r = rospy.Rate(0.2)
+        while not rospy.is_shutdown():
+            print "Sending offboard mode"
+            response = self.set_offboard()
+            if response:
+                print "Offboard mode set"
+                return
+            r.sleep()
+
+    def set_offboard(self):
+        rospy.wait_for_service('mavros/set_mode')
+        try:
+           proxy = rospy.ServiceProxy('mavros/set_mode', SetMode)
+           sm = SetModeRequest()
+           sm.custom_mode = "OFFBOARD"
+           resp1 = proxy(sm)
+           return resp1.mode_sent
+        except rospy.ServiceException, e:
+           print "Service call failed: %s"%e
+           return False
+
+    def is_ready(self):
+        return self.cur_state is not None and self.cur_pose is not None and len(self.waypoints)>0
+
+    def is_armed(self):
+        return self.cur_state.armed == True
+
+    def is_close(self):
+        Xc = self.cur_pose.pose.position.x
+        Yc = self.cur_pose.pose.position.y
+        Zc = self.cur_pose.pose.position.z
+
+        Xw = self.waypoints[0].pose.position.x
+        Yw = self.waypoints[0].pose.position.y
+        Zw = self.waypoints[0].pose.position.z
+
+        return np.linalg.norm(np.array([Xc-Xw, Yc-Yw, Zc-Zw])) < 0.2
+
+    def feeder(self):
+        r = rospy.Rate(10.0)
+        while not rospy.is_shutdown():
+            if self.is_ready():
+                if self.is_armed() and self.is_close() and len(self.waypoints)>1:
+                    print "Reached waypoint ", (self.waypoints[0].pose.position.x, self.waypoints[0].pose.position.y, self.waypoints[0].pose.position.z)
+                    self.waypoints.pop(0)
+                    print "Current waypoint ", (self.waypoints[0].pose.position.x, self.waypoints[0].pose.position.y, self.waypoints[0].pose.position.z)
+
+                self.pose_pub.publish(self.waypoints[0])
+
+            r.sleep()
+
+    def land_waypoint(self):
+        takeoff_wp = PoseStamped()
+        takeoff_wp.header = self.waypoints[-1].header
+
+        takeoff_wp.pose.position.x = self.waypoints[-1].pose.position.x
+        takeoff_wp.pose.position.y = self.waypoints[-1].pose.position.y
+        takeoff_wp.pose.position.z = 0.0
+
+        takeoff_wp.pose.orientation.x = self.waypoints[-1].pose.orientation.x
+        takeoff_wp.pose.orientation.y = self.waypoints[-1].pose.orientation.y
+        takeoff_wp.pose.orientation.z = self.waypoints[-1].pose.orientation.z
+        takeoff_wp.pose.orientation.w = self.waypoints[-1].pose.orientation.w
+
+        self.add_waypoint(takeoff_wp)
+
+    def takeoff_waypoint(self):
+        takeoff_wp = PoseStamped()
+        takeoff_wp.header = self.waypoints[-1].header
+
+        takeoff_wp.pose.position.x = self.waypoints[-1].pose.position.x
+        takeoff_wp.pose.position.y = self.waypoints[-1].pose.position.y
+        takeoff_wp.pose.position.z = 1.0
+
+        takeoff_wp.pose.orientation.x = self.waypoints[-1].pose.orientation.x
+        takeoff_wp.pose.orientation.y = self.waypoints[-1].pose.orientation.y
+        takeoff_wp.pose.orientation.z = self.waypoints[-1].pose.orientation.z
+        takeoff_wp.pose.orientation.w = self.waypoints[-1].pose.orientation.w
+
+        self.add_waypoint(takeoff_wp)
+
+    def wait_for_land(self):
+        self.land_waypoint()
+        r = rospy.Rate(0.2)
+        while not rospy.is_shutdown():
+            print "Waiting for landing"
+            if self.cur_pose.pose.position.z < 0.2 and len(self.waypoints) == 1:
+                print "Within tolerance"
+                return
+            r.sleep()
+
+    def wait_for_feeder(self):
+        self.feeder_thread.join()
+
+
+
+if __name__ == "__main__":
+    rospy.init_node('test_flight')
+    wf = WaypointFeeder("world")
+
+    # rospy.on_shutdown(wf.set_disarm)
+
+    wf.wait_for_ready()
+    wf.wait_for_offboard()
+    wf.wait_for_arm()
+
+    wf.takeoff_waypoint()
+    
+    wp = PoseStamped()
+    wp.header.frame_id = "world"
+    wp.pose.position.x = 0.0
+    wp.pose.position.y = 0.0
+    wp.pose.position.z = 1.0
+    wp.pose.orientation.w = 1.0
+    wf.add_waypoint(wp)
+
+    wf.land_waypoint()
+    wf.wait_for_land()
+
+    wf.wait_for_disarm()
+    wf.wait_for_feeder()

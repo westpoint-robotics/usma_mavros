@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-
-<robot name="erlecopter" xmlns:xacro="http://ros.org/wiki/xacro">
-  <!-- Instantiate erlecopter "mechanics" -->
-  <xacro:include filename="$(find usma_vtol)/urdf/erlecopter.xacro" />
-</robot>
-

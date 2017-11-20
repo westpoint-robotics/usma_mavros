@@ -123,3 +123,83 @@ iface wlan0 inet dhcp
 3. on remote host,set up ROS_MASTER_URI and IP and run <code> roslaunch mocap_optitrack mocap.launch </code>
 4. on different terminal,set up ROS_MASTER_URI and IP and run  <code> roslaunch mavros_extras teleop_track.launch </code>
 5. Joystick button map is listed in f710_joy.yaml( for take-off ,land, track button reference) 
+
+
+
+# New instructions
+
+## Quad rotor naming
+
+All tail numbers must be unique
+
+- Mocap rigid body naming  -  f450_<TAIL_NUM>
+- Hostname  -  odroid-<TAIL_NUM>
+
+# PX4 setup
+- Flash the firmware located in the config folder
+- Load the params file in the config folder
+- Calibrate all sensors
+
+# Odroid setup
+During OS installation
+- Hostname  -  odroid-<TAIL_NUM>
+
+After OS install
+```
+echo "192.168.200.88 ros304" | sudo tee -a /etc/hosts
+```
+
+After ROS install
+- clone and make mavros from source
+- make sure to compile with one job otherwise it will most likely fail
+
+```
+cd ~/catkin_ws
+catkin_make -j1
+```
+
+Generate and share SSH key (no password)
+```
+ssh-keygen
+cat ~/.ssh/id_rsa.pub
+```
+
+Copy and paste this into the base station's authorized_keys file in a new line
+
+# Base station setup
+Only once
+```
+echo  "export ROSLAUNCH_SSH_UNKNOWN=1" >> ~/.bashrc
+echo  "export ROS_MASTER_URI=http://ros304:11311" >> ~/.bashrc
+```
+
+For each Odroid
+```
+echo "<IP_ADDRESS> odroid-<TAIL_NUM" | sudo tee -a /etc/hosts
+```
+
+An ssh key should already be setup. Share with the odroid
+```
+cat ~/.ssh/id_rsa.pub
+```
+Copy and paste this into the odroid's authorized_keys file in a new line
+
+
+# How to run
+
+Make sure a BATTERY is plugged in
+
+Terminal A
+```
+roslaunch usma_mavros base_station.launch
+```
+
+Terminal B
+```
+roslaunch usma_mavros lpe_mavros_quad.launch TAIL_NUM:=131
+```
+
+Terminal C
+```
+rosrun usma_mavros test_flight __ns:=f450_131
+```
