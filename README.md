@@ -5,9 +5,9 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 ## Outdoor Operations
 
 ### PX4 Instructions
-1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here] (http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).   
+1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).
 2. Configure PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc). 
-  - The `sys_companion` field is set 921600. This paramater is Serial 2.
+  - The `SERIAL2_BAUD` parameter is set to 921600. This paramater is the Telemetry 2 port on the PX4.
  
 ### Computer Instructions
 1. Install the [mavros package](http://wiki.ros.org/mavros) and dependencies (assuming the stable version of ROS is used).
