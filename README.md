@@ -24,7 +24,8 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
   - QGC can connect to the autopilot using the Default UDP link.  
 5. Execute mavros
  - `roslaunch usma_mavros px4.launch`
- - Check that there is a heartbeat with the PX4.
+ - Check that there is a heartbeat with the PX4. `[INFO] [1573276705.686808500]: CON: Got HEARTBEAT, connected. FCU: ArduPilot`
+
  
 ----- Need to update indoor ------
 
