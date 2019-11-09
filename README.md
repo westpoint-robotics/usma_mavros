@@ -6,8 +6,7 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 
 ### PX4 Instructions
 1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).
-2. Configure PX4 using [QGroundControl](qgroundcontrol.org/){:target="_blank"}
-(download latest firmware, set up flight modes, etc). 
+2. Configure PX4 using [QGroundControl](qgroundcontrol.org/ target="_blank") (download latest firmware, set up flight modes, etc). 
   - The `SERIAL2_BAUD` parameter is set to 921600. This paramater is the Telemetry 2 port on the PX4.
  
 ### Computer Instructions
