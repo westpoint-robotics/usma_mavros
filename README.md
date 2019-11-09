@@ -1,6 +1,6 @@
 # usma_mavros
 
-These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup for a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, RPi, or ground station PC.
+These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup for a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, or RPi while using a ground station PC connected via Wifi and a telemetry radio.
 
 ## Outdoor Operations
 
