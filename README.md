@@ -5,12 +5,12 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 ## Outdoor Operations
 
 ### PX4 Instructions
-1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).
-2. Configure PX4 using [QGroundControl](http://qgroundcontrol.com/) (download latest firmware, set up flight modes, etc).
+1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using the USB port. Follow the [PX4 development guide](https://docs.px4.io/v1.9.0/en/config/). See your instructor with questions.
+2. Configure the PX4 using [QGroundControl](http://qgroundcontrol.com/) (download latest firmware, set up flight modes, etc).
   - The `SERIAL2_BAUD` parameter is set to 921600. This paramater is the Telemetry 2 port on the PX4.
- 
- <a href="http://example.com" target="_blank">http://example.com</a>
- 
+3. Once your PX4 is configured and calibrated, it can connect to a companion computer through an FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).
+4. These instructions assume the latest stable version of the firmware.
+
 ### Computer Instructions
 1. Install the [mavros package](http://wiki.ros.org/mavros) and dependencies (assuming the stable version of ROS is used).
 2. Clone usma_mavros
@@ -26,10 +26,10 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
   - QGC can connect to the autopilot using the Default UDP link.  
 5. Execute mavros
  - `roslaunch usma_mavros px4.launch`
- - Check that there is a heartbeat with the PX4. `[INFO] [1573276705.686808500]: CON: Got HEARTBEAT, connected. FCU: ArduPilot`
-
+ - Check that there is a heartbeat with the PX4. 
+ - `[INFO] [1573276705.686808500]: CON: Got HEARTBEAT, connected. FCU: ArduPilot`
  
------ Need to update indoor ------
+----- Need to update indoor operations and below ------
 
 ## Indoor Operations
 
