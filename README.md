@@ -2,6 +2,41 @@
 
 These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup for a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, RPi, or ground station PC.
 
+## Outdoor Operations
+
+### PX4 Instructions
+1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here] (http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).   
+2. Configure PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc). 
+  - The `sys_companion` field is set 921600. This paramater is Serial 2.
+ 
+### Computer Instructions
+1. Install the [mavros package](http://wiki.ros.org/mavros) and dependencies (assuming the stable version of ROS is used).
+2. Clone usma_mavros
+ - `cd ~/catkin_ws/src`
+ - `git clone https://github.com/westpoint-robotics/usma_mavros`
+3. Build
+ - `cd ~/catkin_ws/`
+ - `catkin_make -DMAVLINK_DIALECT=common`
+4. Configure mavros on computer:
+ - In `px4.launch`, 
+  - The computer is connecting through `ttyUSB0:921600` instead of `ttyACM0:57600`.
+  - Chage the `gcs_url` argument default to `default="udp://:14556@192.168.XX.XX:14550"` to match the IP of the ground control station.
+  - QGC can connect to the autopilot using the Default UDP link.  
+5. Execute mavros
+ - `roslaunch usma_mavros px4.launch`
+ - Check that there is a heartbeat with the PX4.
+ - Check the debug messages for a valid vision estimate: `FCU: [inav] VISION estimate valid`
+ - Echo the FCU local position to check for propoer coordinate frame conversions: `rostopic echo /mavros/local_position/local`
+
+<a href="url"><img src="https://github.com/westpoint-robotics/usma_vtol/blob/master/setup.png" align="center" width="500" ></a>
+
+
+
+
+
+
+----- Need to update indoor ------
+
 ## Indoor Operations
 
 1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using a USB extension and FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://ardupilot.org/dev/docs/odroid-via-mavlink.html).  For initial testing and configuration, it is possible to connect to the PX4's micro USB port.
