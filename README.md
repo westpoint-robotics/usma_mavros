@@ -9,6 +9,8 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 2. Configure PX4 using [QGroundControl](http://qgroundcontrol.com/) (download latest firmware, set up flight modes, etc).
   - The `SERIAL2_BAUD` parameter is set to 921600. This paramater is the Telemetry 2 port on the PX4.
  
+ <a href="http://example.com" target="_blank">http://example.com</a>
+ 
 ### Computer Instructions
 1. Install the [mavros package](http://wiki.ros.org/mavros) and dependencies (assuming the stable version of ROS is used).
 2. Clone usma_mavros
