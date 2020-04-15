@@ -1,15 +1,15 @@
 # usma_mavros
 
-These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup for a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, or RPi while using a ground station PC connected via Wifi and a telemetry radio.
+These instructions are for operating a small, multirotor UAS running a PX4 flight control unit or similar variant. They also include setup for a ROS interface using mavlink and mavros.  The companion computer can be a number of embedded devices such as a NUC, Odroid, or RPi while using a ground station PC connected via WiFi and a telemetry radio.
 
 ## Outdoor Operations
 
 ### PX4 Instructions
 1. We recommend first starting with a tethered configuration (power and communications). A Linux computer can connect to the PX4 using the USB port. Follow the [PX4 development guide](https://docs.px4.io/v1.9.0/en/config/). See your instructor with questions.
-2. Configure the PX4 using [QGroundControl](http://qgroundcontrol.com/) (download latest firmware, set up flight modes, etc).
+2. Configure the PX4 using [QGroundControl](http://qgroundcontrol.com/) (download latest [firmware](https://github.com/PX4/Firmware/releases/), set up flight modes, etc).
   - The `SERIAL2_BAUD` parameter is set to 921600. This paramater is the Telemetry 2 port on the PX4.
 3. Once your PX4 is configured and calibrated, it can connect to a companion computer through an FTDI adapter to the Telemetry 2 port on the PX4 as described [here](http://dev.px4.io/v1.9.0/en/companion_computer/pixhawk_companion.html).
-4. These instructions assume the latest stable version of the firmware.
+4. These instructions assume the latest stable version of the firmware ([v1.10.0 as of March 2020](https://github.com/PX4/Firmware/releases/tag/v1.10.0)).  Note: If the /tag/v*.*.* page does not have .px4 files, go to the next available stable release.  For the Pixhawk v2.1 cube, you need fmu-v3, e.g. px4_fmu-v3_default.px4
 
 ### Computer Instructions
 1. Install the [mavros package](http://wiki.ros.org/mavros) and dependencies (assuming the stable version of ROS is used).
@@ -21,9 +21,9 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
  - `catkin_make -DMAVLINK_DIALECT=common`
 4. Configure mavros on computer:
  - In `px4.launch`, 
-  - The computer is connecting through `ttyUSB0:921600` instead of `ttyACM0:57600`.
-  - Chage the `gcs_url` argument default to `default="udp://:14556@192.168.XX.XX:14550"` to match the IP of the ground control station.
-  - QGC can connect to the autopilot using the Default UDP link.  
+ - The computer is connecting through `ttyUSB0:921600` instead of `ttyACM0:57600`.
+ - Chage the `gcs_url` argument default to `default="udp://:14556@192.168.XX.XX:14550"` to match the IP of the ground control station (which may be determined using `ifconfig`, or `ip a`).
+ - QGC can connect to the autopilot using the Default UDP link.  
 5. Execute mavros
  - `roslaunch usma_mavros px4.launch`
  - Check that there is a heartbeat with the PX4. 
@@ -71,10 +71,10 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 2. Configure PX4 using [QGroundControl](qgroundcontrol.org/) (download latest firmware, set up flight modes, etc). 
  - If operating in mocap, follow the [usma_optitrack](https://github.com/westpoint-robotics/usma_optitrack) instructions for set up motion capture.
  - Configure the PX4 to operate in mocap using [external position] (http://dev.px4.io/external-position.html).
-  - The `sys_companion` field is set 921600.
-  - `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
-  - `CBRK_NO_VISION` parameter set to 0.
-  - Indoor navigation is only achieved by using the external headings from mocap.
+ - The `sys_companion` field is set 921600.
+ - `ATT_EXT_HDG_M` parameter is set to 1 (when using vision_pose topic).
+ - `CBRK_NO_VISION` parameter set to 0.
+ - Indoor navigation is only achieved by using the external headings from mocap.
  - The [offboard control](http://dev.px4.io/offboard-control.html) documentation provides a good overview.
  
 ### Computer Instructions
@@ -90,10 +90,10 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
  - Note some variations to the mavros configuration:
  - Using QGC, the `sys_companion` field is set 921600 so that autopilot is enabled with a higher baud rate to communicate with the computer.
  - In `px4.launch`, 
-  - The computer is connecting through `ttyUSB0:921600` instead of `ttyACM0:57600`.
-  - Chage the `gcs_url` argument default to `default="udp://:14556@192.168.200.XX:14550"` to match the IP of the ground control station.
-   - QGC can connect to the autopilot using the Default UDP link.  
-   - If using mocap, ensure that the `vision_pose_estimate` plugin is enabled and NOT blacklisted.
+ - The computer is connecting through `ttyUSB0:921600` instead of `ttyACM0:57600`.
+ - Chage the `gcs_url` argument default to `default="udp://:14556@192.168.200.XX:14550"` to match the IP of the ground control station (which may be determined using `ifconfig`, or `ip a`).
+ - QGC can connect to the autopilot using the Default UDP link.  
+ - If using mocap, ensure that the `vision_pose_estimate` plugin is enabled and NOT blacklisted.
 6. Execute mavros
  - `roslaunch usma_mavros px4.launch`
  - Check that there is a heartbeat with the PX4.
@@ -111,7 +111,7 @@ These instructions are for operating a small, multirotor UAS running a PX4 fligh
 3. Install linux-firmware drivers to enable wifi.
  - `sudo apt-get install linux-firmware`
  - `sudo apt-get install wicd`
-4. [Setup wifi on your device] (https://help.ubuntu.com/community/NetworkConfigurationCommandLine/Automatic)
+4. [Setup WiFi on your device] (https://help.ubuntu.com/community/NetworkConfigurationCommandLine/Automatic)
  - [Another reference] (https://learn.adafruit.com/adafruits-raspberry-pi-lesson-3-network-setup/setting-up-wifi-with-occidentalis)
  - `$ sudo nano /etc/network/interfaces`
 ```
@@ -211,7 +211,7 @@ An ssh key should already be setup. Share with the odroid
 ```
 cat ~/.ssh/id_rsa.pub
 ```
-Copy and paste this into the odroid's authorized_keys file in a new line
+Copy and paste this into the Odroid's authorized_keys file in a new line
 
 
 # How to run
