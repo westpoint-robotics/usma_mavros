@@ -295,4 +295,17 @@ Use the following command to allow file editing:
 ```
 chmod 777 px4.launch apm.launch
 ```
-    
+In your favorite text editor change line 5 to match the following:
+```
+<arg name="fcu_url" default="/dev/ttyUSB0:921600" />
+```
+
+### Pixhawk Configuration
+For this section you will need to download the following programs onto your laptop (not necessary for companion computer)
+  - [QGroundControl](https://docs.qgroundcontrol.com/master/en/getting_started/download_and_install.html)
+  - [MissionPlanner](https://ardupilot.org/planner/docs/mission-planner-installation.html)
+
+
+
+
+
