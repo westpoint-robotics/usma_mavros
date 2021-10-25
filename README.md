@@ -236,4 +236,4 @@ rosrun usma_mavros test_flight __ns:=f450_131
 # Mavros Setup Insutruction - Fall 2021
 
 ## Companion Computer Configuration
-Configure an sd card with ubuntu 20.04. I can be downloaded [here] (https://ubuntu-mate.org/download/)
+Configure an sd card with ubuntu 20.04. I can be downloaded [here](https://ubuntu-mate.org/download/)
