@@ -254,3 +254,45 @@ Now that an ubuntu operating system is downloaded we can install ROS and mavros.
     sudo bash ./install_geographiclib_datasets.sh
     ```
     You need to be in the same directory as ```install_geographiclib_datasets.sh``` to run the second command.
+    You can ensure mavros is installed correctly in your system space with:
+    ```
+    roscd mavros
+    ```
+    You should be brought to
+    ```
+    /opt/ros/noetic/share/mavros
+    ```
+  - IP Address
+    Run:
+    ```
+    sudo apt-get install net tools
+    ```
+    Then use the command
+    ```
+    ifconfig
+    ```
+    and something similar to below should be retruned in the ```wlan0``` section:
+    ```
+    wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.212.146.230  netmask 255.255.0.0  broadcast 10.212.255.255
+        inet6 fe80::cb1f:1655:4a91:3e58  prefixlen 64  scopeid 0x20<link>
+        ether dc:a6:32:a1:30:8a  txqueuelen 1000  (Ethernet)
+        RX packets 1003  bytes 864468 (864.4 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 692  bytes 299630 (299.6 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    ```
+    The ip address follows ```inet``` in this case it would be ```10.212.146.230```
+    It is helpful to note this for remoting into your companion computer.
+
+### Mavros Set-up
+Now we need to configure mavros so you are ready to fly. 
+First navigate to the launch files with 
+```
+roscd mavros/launch
+```
+Use the following command to allow file editing:
+```
+chmod 777 px4.launch apm.launch
+```
+    
