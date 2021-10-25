@@ -235,5 +235,22 @@ rosrun usma_mavros test_flight __ns:=f450_131
 
 # Mavros Setup Insutruction - Fall 2021
 
-## Companion Computer Configuration
-Configure an sd card with ubuntu 20.04. I can be downloaded [here](https://ubuntu-mate.org/download/)
+### Companion Computer OS Configuration
+Configure ubuntu 20.04 appropraitely depending on your companion computer. It can be downloaded [here](https://ubuntu-mate.org/download/)
+  - Raspberry Pi 4 / Odroid: Download the armhf 32 bit version [here](https://ubuntu-mate.org/download/armhf/) onto an sd-card and configure it following the directions based on what OS your main laptop is running. [Linux](https://itsfoss.com/format-usb-drive-sd-card-ubuntu/) [Windows](https://ubuntu.com/download/iot/installation-media) (scroll to "On Windows" section).
+  - Up Core: Follow the instruction on this [page](https://github.com/up-board/up-community/wiki/Ubuntu_20.04).
+  - Intel NUC: NUC's from the RRC should already be running 18.04, this is okay.
+
+### Companion Computer ROS/Mavros Install
+Now that an ubuntu operating system is downloaded we can install ROS and mavros. 
+  - ROS Noetic: Follow the instructions at the page [here](http://wiki.ros.org/noetic/Installation/Ubuntu)
+  - Mavros: Once ROS Noetic is installed use the following command to install Mavros
+    ```
+    sudo apt-get install ros-kinetic-mavros ros-kinetic-mavros-extras
+    ```
+    You will also need GeographicLib which can be installed with these commands;
+    ```
+    wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
+    sudo bash ./install_geographiclib_datasets.sh
+    ```
+    You need to be in the same directory as ```install_geographiclib_datasets.sh``` to run the second command.
