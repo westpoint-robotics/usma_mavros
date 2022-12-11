@@ -4,11 +4,14 @@ The folder contains code to build a px4-ready mavros docker image.
 
 It is designed to work with virtualized px4 images, such as [px4-gazebo-headless](https://github.com/JonasVautherin/px4-gazebo-headless)
 
-Once running, it will provide a ROS node that can interface with PX4 via UDP
+Once running, it will provide a ROS node that can interface with PX4 via UDP.
 
+This is based on the [px4-dev-ros-melodic toolchain provided by px4](https://hub.docker.com/r/px4io/px4-dev-ros-melodic), and adds arguments for easy FCU specification and delayed start.
+ 
 ## Build the PX4-MavRos container
 
 ```
+cd docker/
 docker build -t usma-robotics/mavros .
 ```
 
@@ -29,10 +32,7 @@ There are a number of optional ENV variables available:
 Example:
 
 ```
-docker run -e ROS_MASTER_URI='http://localhost:11311' -e FCUURL='udp://:14540@127.0.0.1:14557' -e STARTUP_DELAT=10 -it usma-robotics/mavros 
+docker run -e ROS_MASTER_URI='http://192.168.1.10:11311' -e FCUURL='udp://:14540@192.168.1.54:14557' -e STARTUP_DELAY=10 -it usma-robotics/mavros 
 ```
-
-## Simulation examples
-
 
 
