@@ -5,7 +5,7 @@ STARTUP_DELAY=$2
 
 printf "Starting mavros px4\n"
 printf "FCUURL=$FCUURL\n"
-printf "STARTUP_DELAY=$STARUP_DELAY\n"
+printf "STARTUP_DELAY=$STARTUP_DELAY\n"
 printf "ROS_MASTER_URI=$ROS_MASTER_URI\n\n"
 
 printf "Sleeping for $STARTUP_DELAY seconds...\n"
